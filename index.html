@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DRAMERA - Tools für Theaterproduktionen</title>
+  <meta name="description" content="Digitale Werkzeuge für Dramaturgie, Regiebuch und Probenplanung.">
+  
+  <style>
+    .dramera-home {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1e293b;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .dramera-home * { box-sizing: border-box; }
+    
+    .dramera-header {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .dramera-header h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      color: #1e3a5f;
+    }
+    
+    .dramera-header .subtitle {
+      font-size: 1.1rem;
+      color: #64748b;
+      margin: 0;
+    }
+    
+    .dramera-intro {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .dramera-intro p {
+      margin: 0;
+      color: #475569;
+      font-size: 0.95rem;
+    }
+    
+    .dramera-app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    @media (max-width: 700px) {
+      .dramera-app-grid { grid-template-columns: 1fr; }
+    }
+    
+    .dramera-app-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      transition: box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .dramera-app-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    
+    .dramera-app-card.werkbank { border-top: 4px solid #c4a77d; }
+    .dramera-app-card.rebu { border-top: 4px solid #3b82f6; }
+    .dramera-app-card.propla { border-top: 4px solid #0f766e; }
+    
+    .dramera-app-card .icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      height: 2.5rem;
+    }
+    
+    .dramera-app-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 0.25rem 0;
+      color: #1e293b;
+    }
+    
+    .dramera-app-card .type {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 0.5rem;
+    }
+    
+    .dramera-app-card p {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin: 0 0 1rem 0;
+      flex-grow: 1;
+    }
+    
+    .dramera-app-card .btn {
+      display: block;
+      width: 100%;
+      padding: 0.625rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s;
+      color: white;
+    }
+    
+    .dramera-app-card.werkbank .btn { background: #c4a77d; }
+    .dramera-app-card.werkbank .btn:hover { background: #b39468; }
+    .dramera-app-card.rebu .btn { background: #3b82f6; }
+    .dramera-app-card.rebu .btn:hover { background: #2563eb; }
+    .dramera-app-card.propla .btn { background: #0f766e; }
+    .dramera-app-card.propla .btn:hover { background: #0d5d56; }
+    
+    .dramera-workflow {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .dramera-workflow h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 1rem 0;
+      color: #1e293b;
+      text-align: center;
+    }
+    
+    .dramera-workflow-steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .dramera-workflow-step {
+      flex: 1;
+      min-width: 100px;
+      text-align: center;
+      padding: 0.75rem;
+    }
+    
+    .dramera-workflow-step .icon {
+      font-size: 1.75rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .dramera-workflow-step h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0 0 0.125rem 0;
+      color: #1e293b;
+    }
+    
+    .dramera-workflow-step p {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin: 0;
+    }
+    
+    .dramera-workflow-arrow {
+      font-size: 1.25rem;
+      color: #cbd5e1;
+    }
+    
+    @media (max-width: 600px) {
+      .dramera-workflow-arrow { display: none; }
+    }
+    
+    .dramera-workflow-note {
+      text-align: center;
+      color: #64748b;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    
+    .dramera-notes { margin-bottom: 2.5rem; }
+    
+    .dramera-notes h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 1rem 0;
+      color: #1e293b;
+    }
+    
+    .dramera-notes ul {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: #475569;
+      font-size: 0.9rem;
+    }
+    
+    .dramera-notes li { margin-bottom: 0.5rem; }
+    
+    .dramera-cloud {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .dramera-cloud h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #64748b;
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .dramera-cloud p {
+      color: #64748b;
+      font-size: 0.85rem;
+      margin: 0 0 0.75rem 0;
+    }
+    
+    .dramera-cloud a {
+      color: #0f766e;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+    
+    .dramera-cloud a:hover { text-decoration: underline; }
+    
+    .dramera-about {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    
+    .dramera-about-logo { flex-shrink: 0; }
+    
+    .dramera-about-logo img {
+      width: 100px;
+      height: auto;
+    }
+    
+    .dramera-about-text h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem 0;
+      color: #1e293b;
+    }
+    
+    .dramera-about-text p {
+      color: #475569;
+      font-size: 0.9rem;
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .dramera-about-text a {
+      color: #0f766e;
+      text-decoration: none;
+    }
+    
+    .dramera-about-text a:hover { text-decoration: underline; }
+    
+    @media (max-width: 500px) {
+      .dramera-about {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    }
+    
+    .dramera-footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: #94a3b8;
+      font-size: 0.8rem;
+      border-top: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="dramera-home">
+  
+  <header class="dramera-header">
+    <h1>DRAMERA</h1>
+    <p class="subtitle">Digitale Werkzeuge für Theaterproduktionen</p>
+  </header>
+  
+  <div class="dramera-intro">
+    <p>
+      DRAMERA ist eine Sammlung von drei Werkzeugen für die Theaterarbeit: 
+      Eine dramaturgische Werkbank, ein digitales Regiebuch und ein Probenplaner. 
+      Die Tools befinden sich in der Testphase. Rückmeldungen und Verbesserungsvorschläge sind willkommen.
+    </p>
+  </div>
+  
+  <div class="dramera-app-grid">
+    
+    <div class="dramera-app-card werkbank">
+      <div class="icon">📝</div>
+      <h3>Werkbank</h3>
+      <div class="type">Dramaturgische Entwicklung</div>
+      <p>Figuren, Szenen, Themen und Konflikte strukturieren. Mit optionaler KI-Unterstützung.</p>
+      <a href="https://ublueli.github.io/Dramera-Offline/" class="btn" target="_blank">Öffnen</a>
+    </div>
+    
+    <div class="dramera-app-card rebu">
+      <div class="icon">📘</div>
+      <h3>Rebu</h3>
+      <div class="type">Digitales Regiebuch</div>
+      <p>Szenentext, Regieanweisungen, Cues und Bildmaterial zusammenführen.</p>
+      <a href="https://ublueli.github.io/Regiebuch---Offline/" class="btn" target="_blank">Öffnen</a>
+    </div>
+    
+    <div class="dramera-app-card propla">
+      <div class="icon">📅</div>
+      <h3>Propla</h3>
+      <div class="type">Probenplaner</div>
+      <p>Termine, Ensemble und Szenenzuteilung verwalten.</p>
+      <a href="https://ublueli.github.io/Probeplan-Offline/" class="btn" target="_blank">Öffnen</a>
+    </div>
+    
+  </div>
+  
+  <div class="dramera-workflow">
+    <h3>Datenaustausch zwischen den Tools</h3>
+    <div class="dramera-workflow-steps">
+      <div class="dramera-workflow-step">
+        <div class="icon">📝</div>
+        <h4>Werkbank</h4>
+        <p>Figuren & Szenen</p>
+      </div>
+      <div class="dramera-workflow-arrow">→</div>
+      <div class="dramera-workflow-step">
+        <div class="icon">📘</div>
+        <h4>Rebu</h4>
+        <p>Text & Regie</p>
+      </div>
+      <div class="dramera-workflow-arrow">→</div>
+      <div class="dramera-workflow-step">
+        <div class="icon">📅</div>
+        <h4>Propla</h4>
+        <p>Probenplanung</p>
+      </div>
+    </div>
+    <p class="dramera-workflow-note">
+      Die Tools verwenden das NINA-Exchange Format (v2.0). 
+      Projekte lassen sich exportieren und in andere Tools importieren.
+    </p>
+  </div>
+  
+  <div class="dramera-notes">
+    <h3>Hinweise</h3>
+    <ul>
+      <li>Die Daten werden lokal im Browser gespeichert. Beim Löschen der Browserdaten gehen sie verloren.</li>
+      <li>Projekte regelmässig als Datei exportieren, um sie zu sichern.</li>
+      <li>Die KI-Funktionen in der Werkbank erfordern einen eigenen API-Schlüssel (OpenAI oder Anthropic).</li>
+      <li>Getestet mit aktuellen Versionen von Chrome, Firefox und Safari.</li>
+    </ul>
+  </div>
+  
+  <div class="dramera-cloud">
+    <h4>☁️ Cloud-Version</h4>
+    <p>
+      Es gibt auch eine Version mit Benutzeranmeldung und Cloud-Speicherung. 
+      Diese ist derzeit für einen begrenzten Testkreis verfügbar.
+    </p>
+    <a href="https://ublueli.github.io/Dramera-Dashboard/" target="_blank">Zum Cloud-Dashboard →</a>
+  </div>
+  
+  <div class="dramera-about">
+    <div class="dramera-about-logo">
+      <img src="data:image/png;base64,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" alt="NiNA konzept">
+    </div>
+    <div class="dramera-about-text">
+      <h3>Konzept und Entwicklung</h3>
+      <p>
+        <strong>Ueli Blum</strong> · Regisseur, Dramaturg und Autor<br>
+        Gründer des NiNA Theater in Bätterkinden.
+      </p>
+      <p>
+        <a href="https://ueliblum.ch" target="_blank">ueliblum.ch</a> · 
+        <a href="https://ueliblum.ch/nna-konzept/" target="_blank">NiNA konzept</a> · 
+        <a href="https://de.wikipedia.org/wiki/Ueli_Blum" target="_blank">Wikipedia</a>
+      </p>
+    </div>
+  </div>
+  
+  <footer class="dramera-footer">
+    DRAMERA · Testversion · Feedback an info [at] ueliblum [dot] ch
+  </footer>
+  
+</div>
+
+</body>
+</html>
